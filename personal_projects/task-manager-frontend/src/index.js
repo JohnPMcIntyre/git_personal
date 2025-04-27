@@ -1,6 +1,8 @@
 // Importing React and ReactDOM from 'react-dom/client' for React 18+
 import React from 'react';
 import ReactDOM from 'react-dom/client'; // Correct import for React 18
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 // Importing the root App component
 import App from './App';
