@@ -29,7 +29,7 @@ db.connect(err => {
 // API Routes
 
 // Get all tasks
-app.get('/api/tasks', (req, res) => {
+app.get('/tasks', (req, res) => {
   const sql = 'SELECT * FROM tasks';
   db.query(sql, (err, result) => {
     if (err) {
@@ -40,7 +40,7 @@ app.get('/api/tasks', (req, res) => {
 });
 
 // Create a new task
-app.post('/api/tasks', (req, res) => {
+app.post('/tasks', (req, res) => {
   const { title, description, due_date, category, priority } = req.body;
   const sql = 'INSERT INTO tasks (title, description, due_date, category, priority) VALUES (?, ?, ?, ?, ?)';
   db.query(sql, [title, description, due_date, category, priority], (err, result) => {
@@ -60,7 +60,7 @@ app.post('/api/tasks', (req, res) => {
 });
 
 // Update a task's status
-app.put('/api/tasks/:id', (req, res) => {
+app.put('/tasks/:id', (req, res) => {
   const taskId = req.params.id;
   const { status } = req.body;
   const sql = 'UPDATE tasks SET status = ? WHERE id = ?';
@@ -73,7 +73,7 @@ app.put('/api/tasks/:id', (req, res) => {
 });
 
 // Delete a task
-app.delete('/api/tasks/:id', (req, res) => {
+app.delete('/tasks/:id', (req, res) => {
   const taskId = req.params.id;
   const sql = 'DELETE FROM tasks WHERE id = ?';
   db.query(sql, [taskId], (err, result) => {
