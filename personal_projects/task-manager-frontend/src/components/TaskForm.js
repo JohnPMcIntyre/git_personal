@@ -7,9 +7,11 @@ const TaskForm = ({ onTaskAdded }) => {
   const [dueDate, setDueDate] = useState('');
   const [category, setCategory] = useState('');
   const [priority, setPriority] = useState('');
+  const [status, setStatus] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post('http://localhost:5000/tasks', {
         title,
@@ -17,10 +19,19 @@ const TaskForm = ({ onTaskAdded }) => {
         due_date: dueDate,
         category,
         priority,
+        status,
       });
 
-      // If task is successfully added, notify parent component
+      // Notify parent component (App) that a new task has been added
       onTaskAdded(response.data);
+
+      // Clear the form fields
+      setTitle('');
+      setDescription('');
+      setDueDate('');
+      setCategory('');
+      setPriority('');
+      setStatus('');
     } catch (error) {
       console.error('Error adding task:', error);
     }
@@ -55,6 +66,11 @@ const TaskForm = ({ onTaskAdded }) => {
         <option value="High">High</option>
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
+      </select>
+      <select value={status} onChange={(e) => setStatus(e.target.value)}>
+        <option value="In Progress">In Progress</option>
+        <option value="Not Working">Not Working</option>
+        <option value="Pending">Pending</option>
       </select>
       <button type="submit">Add Task</button>
     </form>

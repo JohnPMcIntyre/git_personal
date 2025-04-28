@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tab, Nav, Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import './App.css';
 
-// Define App component
 const App = () => {
   const [tasks, setTasks] = useState([]);
 
+  // Fetch tasks from the server when the app loads
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/tasks');
+        setTasks(response.data); // Set the fetched tasks in the state
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+    fetchTasks();
+  }, []); // Empty dependency array means it runs only once after the first render
+
   const handleTaskAdded = (newTask) => {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+    setTasks((prevTasks) => [...prevTasks, newTask]); // Update tasks after adding a new one
   };
 
   return (
@@ -28,12 +42,9 @@ const App = () => {
           </Col>
           <Col sm={9}>
             <Tab.Content>
-              {/* Tab for Adding Task */}
               <Tab.Pane eventKey="add-task">
                 <TaskForm onTaskAdded={handleTaskAdded} />
               </Tab.Pane>
-
-              {/* Tab for Displaying Task List */}
               <Tab.Pane eventKey="task-list">
                 <TaskList tasks={tasks} />
               </Tab.Pane>
